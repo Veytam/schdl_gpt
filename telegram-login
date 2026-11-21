@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+cd /opt/study-schedule
+docker run --rm -it --name study-schedule-login --network study-schedule \
+    --user 10001:10001 --env-file collector.env \
+    --mount type=bind,src=/opt/study-schedule/session,dst=/data \
+    study-schedule-collector:local --login
+exec /opt/study-schedule/start-collector

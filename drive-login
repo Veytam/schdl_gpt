@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+umask 077
+rclone_run() {
+    docker run --rm -it --network host \
+        --mount type=bind,src=/opt/study-schedule/drive-config,dst=/config/rclone \
+        study-schedule-drive:1.76.0 --config /config/rclone/rclone.conf "$@"
+}
+if test -s /opt/study-schedule/drive-config/rclone.conf; then
+    rclone_run config reconnect study-drive:
+else
+    rclone_run config create study-drive drive scope drive.file config_is_local true --no-output
+fi
+systemctl start study-schedule-drive.service
+systemctl enable --now study-schedule-drive.timer
+echo 'Google Drive sync started.'

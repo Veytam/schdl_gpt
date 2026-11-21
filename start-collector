@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+cd /opt/study-schedule
+test -s session/collector.session
+if docker container inspect study-schedule-collector >/dev/null 2>&1; then
+    exec docker start study-schedule-collector
+fi
+exec docker run -d --name study-schedule-collector --restart unless-stopped \
+    --network study-schedule --user 10001:10001 --env-file collector.env \
+    --mount type=bind,src=/opt/study-schedule/session,dst=/data \
+    --log-opt max-size=5m --log-opt max-file=2 study-schedule-collector:local

@@ -1,0 +1,8 @@
+[Unit]
+Description=Remove expired Telegram archive partitions
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c '/usr/bin/docker exec -i study-schedule-db psql -X -v ON_ERROR_STOP=1 -U postgres -d schedule < /opt/study-schedule/expire.sql'

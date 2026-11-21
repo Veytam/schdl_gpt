@@ -1,0 +1,13 @@
+.env
+*.env
+!.env.example
+*.session*
+rclone.conf*
+drive-config/
+session/
+.venv/
+.mcp-venv/
+__pycache__/
+*.py[cod]
+*.log
+drive-preview.txt

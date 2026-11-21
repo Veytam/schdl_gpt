@@ -1,0 +1,11 @@
+[Unit]
+Description=Publish academic schedule and deadlines to private Google Drive
+Requires=docker.service
+After=docker.service
+ConditionPathExists=/opt/study-schedule/drive-config/rclone.conf
+
+[Service]
+Type=oneshot
+UMask=0077
+TimeoutStartSec=140
+ExecStart=/usr/bin/python3 /opt/study-schedule/drive_export.py
